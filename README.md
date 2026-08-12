@@ -3,7 +3,6 @@
 A premium, dark cinematic movie discovery platform: browse, search, watch trailers, stream
 full movies & TV series, and pick up right where you left off.
 
-> **"Find something worth watching."**
 
 ## Features
 
