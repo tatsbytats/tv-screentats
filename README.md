@@ -22,7 +22,4 @@ full movies & TV series, and pick up right where you left off.
 
 - React 19 + Vite 8 (SPA, hash routing — runs from any static folder)
 - TMDB v3 API for all metadata and artwork
-- VidKing embeddable player for streaming: `https://www.vidking.net/embed/movie/{tmdbId}`
-  and `embed/tv/{tmdbId}/{season}/{episode}`, branded with the app's mint accent
-  (`color=7CFFB2`) and configured for autoPlay, next-episode, and episode-selector.
 - Zero other runtime dependencies.
