@@ -1,0 +1,59 @@
+/* ============================================================
+   ScreenTats design tokens — 60/30/10 system
+   Primary  (60%) deep black / Secondary (30%) dark slate / Accent (10%) mint
+   ============================================================ */
+:root {
+  color-scheme: dark;
+
+  /* Primary — deep black */
+  --bg-0: #050505;
+  --bg-1: #0a0a0a;
+  --bg-2: #0d0d0d;
+
+  /* Secondary — dark slate */
+  --slate-1: #15191c;
+  --slate-2: #1b2125;
+  --slate-3: #242b30;
+  --slate-4: #2e363c;
+
+  /* Accent — mint green */
+  --mint: #7cffb2;
+  --mint-dim: #5ecf8f;
+  --mint-soft: rgba(124, 255, 178, 0.12);
+
+  /* Text */
+  --text: #f2f5f3;
+  --text-muted: #9aa39d;
+  --text-faint: #7d8680;
+
+  /* Lines & fills */
+  --border: rgba(255, 255, 255, 0.07);
+  --border-strong: rgba(255, 255, 255, 0.14);
+  --overlay: rgba(5, 5, 5, 0.55);
+  --overlay-strong: rgba(5, 5, 5, 0.82);
+
+  /* Typography */
+  --font-display: 'Clash Display', 'Arial Black', sans-serif;
+  --font-body: 'Satoshi', 'Segoe UI', system-ui, sans-serif;
+  --font-mono: 'IBM Plex Mono', 'Consolas', monospace;
+
+  /* Layout */
+  --section-pad: 80px;
+  --block-gap: 40px;
+  --card-pad: 24px;
+  --radius: 14px;
+  --radius-sm: 10px;
+  --nav-h: 72px;
+
+  /* Motion */
+  --ease: cubic-bezier(0.22, 1, 0.36, 1);
+  --fast: 160ms;
+  --slow: 320ms;
+
+  /* Glow & rings */
+  --glow-mint: 0 8px 28px rgba(124, 255, 178, 0.22);
+  --ring-mint: 0 0 0 1px rgba(124, 255, 178, 0.18);
+
+  /* Focus */
+  --focus-ring: 0 0 0 2px var(--bg-0), 0 0 0 4px var(--mint);
+}
