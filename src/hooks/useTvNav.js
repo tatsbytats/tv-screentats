@@ -70,10 +70,13 @@ export function useTvNav() {
   useEffect(() => {
     if (!IS_TV) return
 
+    let userInteracted = false
+
     const onKeyDown = (e) => {
       const key = e.key
       if (!['ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight'].includes(key)) return
       if (isEditable(document.activeElement)) return
+      userInteracted = true
       e.preventDefault()
 
       const all = focusables()
@@ -138,11 +141,22 @@ export function useTvNav() {
       return false
     }
 
+    const heroFocus = () => {
+      const main = document.getElementById('main')
+      if (!main || userInteracted) return
+      const hero = main.querySelector(`.hero ${FOCUSABLE}`)
+      if (hero && !hero.contains(document.activeElement)) {
+        moveTo(hero)
+        return true
+      }
+      return false
+    }
+
     const tryGrab = () => {
-      if (grabInitialFocus()) return
-      const timers = [400, 900, 1500].map((ms) =>
+      const timers = [0, 400, 900, 1500, 2500].map((ms) =>
         setTimeout(() => {
-          /* never steal focus once the user has started navigating */
+          /* prefer the hero whenever it appears, until the user starts navigating */
+          if (heroFocus()) return
           const main = document.getElementById('main')
           if (main?.contains(document.activeElement)) return
           grabInitialFocus()

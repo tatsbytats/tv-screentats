@@ -184,7 +184,7 @@ export default function WatchPage({ mediaType }) {
         <ArrowLeftIcon width={16} height={16} /> Back to {detail?.title ?? 'title'}
       </Link>
 
-      <div className="watch-head" style={{ display: 'flex', gap: 16, alignItems: 'center', marginBottom: 28, flexWrap: 'wrap' }}>
+      <div className="watch-head">
         <div>
           <p className="eyebrow">{isTv ? 'Now streaming' : 'Now playing'}</p>
           <h1 style={{ fontSize: '1.7rem' }}>

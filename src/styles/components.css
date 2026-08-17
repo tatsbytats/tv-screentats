@@ -970,6 +970,14 @@
   margin-inline: auto;
 }
 
+.watch-head {
+  display: flex;
+  gap: 16px;
+  align-items: center;
+  margin-bottom: 28px;
+  flex-wrap: wrap;
+}
+
 .player-frame {
   width: 100%;
   aspect-ratio: 16 / 9;
