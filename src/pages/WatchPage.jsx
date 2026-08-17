@@ -78,11 +78,37 @@ export default function WatchPage({ mediaType }) {
 
   const playerRef = useRef(null)
 
-  /* On TV the player fills the screen — hand it the remote focus */
+  /* On TV the player fills the screen: real Fullscreen API + remote focus */
   useEffect(() => {
     if (!IS_TV || !detail) return
-    const t = setTimeout(() => playerRef.current?.focus(), 600)
-    return () => clearTimeout(t)
+    const frame = playerRef.current
+
+    const goFullscreen = () => {
+      if (!frame || document.fullscreenElement) return
+      try {
+        if (frame.requestFullscreen) frame.requestFullscreen().catch(() => {})
+        else if (frame.webkitRequestFullscreen) frame.webkitRequestFullscreen()
+      } catch {
+        /* fallback: the CSS fixed overlay keeps the player fullscreen */
+      }
+    }
+
+    const onKey = (e) => {
+      if (!document.fullscreenElement) goFullscreen()
+    }
+
+    /* navigation into this page was a remote press, so the fullscreen
+       request may still carry that user gesture; retry a few times */
+    const timers = [0, 400, 900, 1500].map((ms) => setTimeout(goFullscreen, ms))
+
+    const tFocus = setTimeout(() => frame?.focus(), 600)
+
+    document.addEventListener('keydown', onKey, true)
+    return () => {
+      timers.forEach(clearTimeout)
+      clearTimeout(tFocus)
+      document.removeEventListener('keydown', onKey, true)
+    }
   }, [detail, playerUrl])
 
   const currentKey = useMemo(
