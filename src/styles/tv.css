@@ -1,0 +1,126 @@
+/* ============================================================
+   ScreenTats — Google TV experience
+   Active only when <html> carries the `tv` class (see lib/tv.js).
+   Netflix-style: full-width rows, dpad spatial navigation,
+   single-focus cards, fullscreen player.
+   ============================================================ */
+
+/* No mouse on a TV */
+.tv {
+  cursor: none;
+}
+
+/* Edge-to-edge, Netflix-style layout */
+.tv .container {
+  width: 100%;
+  max-width: none;
+  padding-inline: clamp(32px, 3.5vw, 72px);
+}
+
+/* Bigger posters, roomier rows */
+.tv .row {
+  grid-auto-columns: minmax(230px, 270px);
+  gap: 26px;
+  padding-bottom: 32px;
+  scroll-behavior: auto;
+}
+
+.tv .row.wide {
+  grid-auto-columns: minmax(400px, 460px);
+}
+
+.tv .cast-row {
+  scroll-behavior: auto;
+}
+
+/* One focus target per card: the card becomes a link to the detail page */
+.tv .card-actions {
+  display: none;
+}
+
+/* Netflix-style scale-up on focus */
+.tv .card:focus-within,
+.tv .card-wide:focus-within {
+  transform: scale(1.12);
+  z-index: 5;
+}
+
+.tv .card:hover,
+.tv .card:focus-within {
+  border-color: rgba(124, 255, 178, 0.55);
+  box-shadow: 0 18px 40px rgba(0, 0, 0, 0.55), 0 0 0 1px rgba(124, 255, 178, 0.18);
+}
+
+.tv .card-wide:focus-within {
+  border-color: rgba(124, 255, 178, 0.55);
+  box-shadow: 0 18px 40px rgba(0, 0, 0, 0.55), 0 0 0 1px rgba(124, 255, 178, 0.18);
+}
+
+.tv .genre-tile:focus,
+.tv .btn:focus-visible,
+.tv .nav-link:focus,
+.tv .see-all:focus,
+.tv .modal-close:focus-visible,
+.tv .episode-card:focus-visible,
+.tv .card-action:focus-visible {
+  transform: translateY(-2px) scale(1.06);
+}
+
+/* Strong, couch-visible focus ring */
+.tv :focus-visible {
+  outline: 3px solid rgba(124, 255, 178, 0.9);
+  outline-offset: 3px;
+  box-shadow: var(--glow-mint);
+}
+
+/* Hide mouse-only affordances */
+.tv .scroll-top,
+.tv .skip-link {
+  display: none;
+}
+
+/* Compact footer */
+.tv .footer {
+  padding-block: 28px;
+}
+
+/* ---------- Fullscreen player ---------- */
+.tv .watch-shell {
+  position: fixed;
+  inset: 0;
+  z-index: 60;
+  width: 100%;
+  max-width: none;
+  margin: 0;
+  padding: 0;
+  background: #000;
+}
+
+.tv .watch-shell .watch-head,
+.tv .watch-shell .resume-note,
+.tv .watch-shell .filters,
+.tv .watch-shell .episode-grid,
+.tv .watch-shell .footer-note {
+  display: none;
+}
+
+.tv .watch-back {
+  position: absolute;
+  top: 28px;
+  left: 28px;
+  z-index: 5;
+  margin: 0 !important;
+}
+
+.tv .player-frame {
+  width: 100%;
+  height: 100%;
+  aspect-ratio: auto;
+  border: 0;
+  border-radius: 0;
+}
+
+/* Bigger trailer dialog */
+.tv .modal {
+  width: min(1000px, 92vw);
+}

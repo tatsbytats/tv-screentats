@@ -3,6 +3,7 @@ import { Link, useParams, useSearchParams } from 'react-router-dom'
 import tmdb, { hasApiKey } from '../lib/tmdb'
 import { buildPlayerUrl, parsePlayerEvent } from '../lib/player'
 import { useStore } from '../context/StoreContext'
+import { IS_TV } from '../lib/tv'
 import Image from '../components/Image'
 import { ErrorState } from '../components/States'
 import { ArrowLeftIcon, PlayIcon, StarIcon } from '../components/Icons'
@@ -75,6 +76,15 @@ export default function WatchPage({ mediaType }) {
     [mediaType, id, selSeason, selEpisode, startTime],
   )
 
+  const playerRef = useRef(null)
+
+  /* On TV the player fills the screen — hand it the remote focus */
+  useEffect(() => {
+    if (!IS_TV || !detail) return
+    const t = setTimeout(() => playerRef.current?.focus(), 600)
+    return () => clearTimeout(t)
+  }, [detail, playerUrl])
+
   const currentKey = useMemo(
     () => (isTv ? `${selSeason}-${selEpisode}` : 'movie'),
     [isTv, selSeason, selEpisode],
@@ -140,11 +150,15 @@ export default function WatchPage({ mediaType }) {
 
   return (
     <div className="container section watch-shell">
-      <Link to={`/${isTv ? 'tv' : 'movie'}/${id}`} className="btn btn-ghost btn-sm" style={{ marginBottom: 24, marginLeft: -8 }}>
+      <Link
+        to={`/${isTv ? 'tv' : 'movie'}/${id}`}
+        className="btn btn-ghost btn-sm watch-back"
+        style={{ marginBottom: 24, marginLeft: -8 }}
+      >
         <ArrowLeftIcon width={16} height={16} /> Back to {detail?.title ?? 'title'}
       </Link>
 
-      <div style={{ display: 'flex', gap: 16, alignItems: 'center', marginBottom: 28, flexWrap: 'wrap' }}>
+      <div className="watch-head" style={{ display: 'flex', gap: 16, alignItems: 'center', marginBottom: 28, flexWrap: 'wrap' }}>
         <div>
           <p className="eyebrow">{isTv ? 'Now streaming' : 'Now playing'}</p>
           <h1 style={{ fontSize: '1.7rem' }}>
@@ -164,7 +178,7 @@ export default function WatchPage({ mediaType }) {
       </div>
 
       {saved && saved.progress > 1 && saved.progress < 98 && (
-        <p className="muted" style={{ marginBottom: 20, fontSize: 13.5 }}>
+        <p className="muted resume-note" style={{ marginBottom: 20, fontSize: 13.5 }}>
           Resuming at {formatSeconds(saved.currentTime)} · {remainingLabel(saved.currentTime, saved.duration)}.
         </p>
       )}
@@ -177,12 +191,14 @@ export default function WatchPage({ mediaType }) {
         <>
           <iframe
             key={currentKey}
+            ref={playerRef}
             className="player-frame"
             src={playerUrl}
             title={`${detail.title} ${isTv ? `season ${selSeason} episode ${selEpisode}` : ''} player`}
             allow="autoplay; fullscreen; encrypted-media; picture-in-picture"
             allowFullScreen
             loading="eager"
+            tabIndex={0}
           />
 
           {isTv && season && (

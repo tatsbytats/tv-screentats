@@ -3,6 +3,8 @@ import { useEffect } from 'react'
 import Navbar, { MobileNav } from './Navbar'
 import { useStore } from '../context/StoreContext'
 import { usePastScrollPoint } from '../hooks/useSentinel'
+import { useTvNav } from '../hooks/useTvNav'
+import { IS_TV } from '../lib/tv'
 import { CheckIcon, ArrowUpIcon } from './Icons'
 
 function ScrollToTop() {
@@ -41,6 +43,7 @@ const footerLinks = [
 
 export default function Layout() {
   const { toast } = useStore()
+  useTvNav()
   const skipToContent = (e) => {
     e.preventDefault()
     const main = document.getElementById('main')

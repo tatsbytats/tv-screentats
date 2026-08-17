@@ -24,6 +24,13 @@ yarn-debug.log*
 yarn-error.log*
 pnpm-debug.log*
 
+# android tv wrapper
+android-tv/.gradle
+android-tv/build
+android-tv/app/build
+android-tv/local.properties
+android-tv/.idea
+
 # editor / OS
 .vscode/*
 !.vscode/extensions.json
