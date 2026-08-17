@@ -2,6 +2,7 @@ import { useCallback, useEffect, useRef, useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import tmdb, { pickTrailer } from '../lib/tmdb'
 import { useStore } from '../context/StoreContext'
+import { IS_TV } from '../lib/tv'
 import Image from './Image'
 import Modal from './Modal'
 import { StarIcon, PlusIcon, CheckIcon, PlayIcon, FilmSlateIcon } from './Icons'
@@ -138,7 +139,11 @@ export function WideCard({ item, genres = [], progress, onContinue, progressLabe
       />
       <div className="card-wide-overlay">
         <h3>
-          <Link to={`/${mediaType === 'movie' ? 'movie' : 'tv'}/${id}`} className="card-wide-title">
+          <Link
+            to={`/${mediaType === 'movie' ? 'movie' : 'tv'}/${id}`}
+            className="card-wide-title"
+            tabIndex={IS_TV ? -1 : undefined}
+          >
             {title}
           </Link>
         </h3>

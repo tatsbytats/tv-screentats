@@ -117,8 +117,19 @@ export function useTvNav() {
 
     const grabInitialFocus = () => {
       const main = document.getElementById('main')
-      if (!main) return
-      if (location.pathname.includes('/watch/')) return // WatchPage focuses the player itself
+      if (!main) return false
+      if (location.pathname.includes('/watch/')) return false // WatchPage focuses the player itself
+      /* Netflix starts on the hero, then rows — not on whatever renders first */
+      const hero = main.querySelector(`.hero ${FOCUSABLE}`)
+      if (hero) {
+        moveTo(hero)
+        return true
+      }
+      const row = main.querySelector(`.row ${FOCUSABLE}, .bento ${FOCUSABLE}, .episode-grid ${FOCUSABLE}`)
+      if (row) {
+        moveTo(row)
+        return true
+      }
       const first = main.querySelector(FOCUSABLE)
       if (first) {
         moveTo(first)
@@ -129,13 +140,15 @@ export function useTvNav() {
 
     const tryGrab = () => {
       if (grabInitialFocus()) return
-      const t = setTimeout(() => {
-        if (!grabInitialFocus()) {
-          const first = document.querySelector(FOCUSABLE)
-          if (first && first !== document.activeElement) first.focus()
-        }
-      }, 700)
-      return () => clearTimeout(t)
+      const timers = [400, 900, 1500].map((ms) =>
+        setTimeout(() => {
+          /* never steal focus once the user has started navigating */
+          const main = document.getElementById('main')
+          if (main?.contains(document.activeElement)) return
+          grabInitialFocus()
+        }, ms),
+      )
+      return () => timers.forEach(clearTimeout)
     }
 
     document.addEventListener('keydown', onKeyDown, true)
